@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+  <main class="container">
+    <section class="panel">
+      <h2>Thank you for your order!</h2>
+      <p>Your order has been successfully placed.</p>
+      <p id="order-ref"></p>
+      <p>Refreshing this page will not create another order.</p>
+      <div style="margin-top:1rem;">
+        <a href="index.html?view=orders" class="btn">View My Orders</a>
+        <a href="index.html" class="btn">Back to Home</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    // display order id if provided
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('orderId');
+    if (id) {
+      const el = document.getElementById('order-ref');
+      if (el) {
+        el.textContent = 'Order ID: ' + id;
+      }
+      // also update the orders link to include it, in case the user wants to
+      // scroll/highlight later
+      const viewLink = document.querySelector('a[href^="index.html?view=orders"]');
+      if (viewLink) {
+        viewLink.href = viewLink.href + '&orderId=' + encodeURIComponent(id);
+      }
+
+      // countdown and auto-redirect so user doesn't have to click
+      let countdown = 5;
+      const info = document.createElement('p');
+      info.style.marginTop = '0.75rem';
+      info.textContent = `Redirecting to your orders in ${countdown} second(s)...`;
+      document.querySelector('section.panel').appendChild(info);
+      const timer = setInterval(() => {
+        countdown--;
+        if (countdown <= 0) {
+          clearInterval(timer);
+          window.location.href = `index.html?view=orders&orderId=${encodeURIComponent(id)}`;
+        } else {
+          info.textContent = `Redirecting to your orders in ${countdown} second(s)...`;
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

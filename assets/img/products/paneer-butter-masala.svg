@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef2ff"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#22c55e" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#22c55e" stop-opacity="0.35"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="600" fill="url(#bg)"/>
+  <rect x="60" y="60" width="780" height="480" rx="34" fill="#ffffff" filter="url(#soft)"/>
+  <rect x="60" y="60" width="780" height="480" rx="34" fill="url(#accent)" opacity="0.18"/>
+  <rect x="60" y="60" width="780" height="480" rx="34" fill="none" stroke="#d4d9e2" stroke-width="2"/>
+
+  <g opacity="0.22">
+    <circle cx="551" cy="217" r="101" fill="#22c55e"/>
+    <circle cx="551" cy="217" r="73" fill="#ffffff"/>
+    <circle cx="503" cy="305" r="71" fill="#22c55e"/>
+  </g>
+
+  <g font-family="Segoe UI, system-ui, -apple-system, sans-serif" fill="#0f172a">
+    <text x="120" y="210" font-size="38" font-weight="900">Paneer Butter Masala</text>
+    <text x="120" y="260" font-size="22" font-weight="700" fill="#334155">Vegetarian</text>
+  </g>
+
+  <g>
+    <rect x="120" y="320" width="210" height="52" rx="999" fill="#22c55e" opacity="0.16"/>
+    <text x="225" y="354" text-anchor="middle" font-family="Segoe UI, system-ui, -apple-system, sans-serif" font-size="18" font-weight="900" fill="#0f172a">LOCAL IMAGE</text>
+  </g>
+
+  <g opacity="0.9" stroke="#22c55e" stroke-width="10" stroke-linecap="round">
+    <path d="M560 420 C 610 360, 690 360, 740 420" fill="none"/>
+    <path d="M590 420 C 620 450, 680 450, 710 420" fill="none" opacity="0.55"/>
+  </g>
+</svg>

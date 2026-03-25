@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Catering Reservation System</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="branding">
+        <h1>Online Catering</h1>
+        <p class="tagline">Reservation &amp; Ordering System</p>
+      </div>
+      <div id="session-box" class="session-box hidden">
+        <span id="session-user"></span>
+        <span id="session-role" class="role-badge" aria-label="Session role"></span>
+        <button id="logout-btn" class="btn danger">Logout</button>
+      </div>
+    </div>
+    <!--  navbar for a cleaner header experience -->
+    <nav class="navbar" aria-label="Primary">
+      <div class="container tabs navbar-tabs">
+        <button class="tab active" data-tab="products">Products</button>
+        <button class="tab" data-tab="caterers">Catering Shops</button>
+        <button class="tab" data-tab="reservations">Reservations</button>
+        <button id="orders-tab" class="tab" data-tab="orders">My Orders</button>
+        <button class="tab" data-tab="profile" aria-label="My Profile">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+          </svg>
+        </button>
+        <button id="admin-products-tab" class="tab hidden" data-tab="admin-products">Upload Product</button>
+        <button id="admin-orders-tab" class="tab hidden" data-tab="admin-orders">View Orders</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container app-shell">
+    <section id="auth-section" class="panel">
+      <div class="auth-layout">
+        <aside class="auth-hero" aria-label="Welcome">
+          <div class="auth-hero-inner">
+            <span class="hero-pill">Catering • Reservations • Orders</span>
+            <h2>Plan events. Order food. Track everything.</h2>
+            <p class="muted">
+              A clean, fast catering platform for customers and admins — browse shops, book reservations, and place orders in minutes.
+            </p>
+            <ul class="hero-list">
+              <li>Browse catering shops & menus</li>
+              <li>Book event reservations (date/time/guests)</li>
+              <li>Secure login with role-based admin tools</li>
+            </ul>
+
+            <div class="food-strip" aria-label="Popular dishes">
+              <figure class="food-chip">
+                <img
+                  alt="Biryani"
+                  loading="lazy"
+                  referrerpolicy="no-referrer"
+                  src="assets/img/products/classic-chicken-biryani.jpg"
+                  onerror="this.onerror=null;this.src='assets/img/placeholder-food.svg';"
+                />
+                <figcaption>Biryani</figcaption>
+              </figure>
+              <figure class="food-chip">
+                <img
+                  alt="Paneer curry"
+                  loading="lazy"
+                  referrerpolicy="no-referrer"
+                  src="assets/img/products/paneer-butter-masala.jpg"
+                  onerror="this.onerror=null;this.src='assets/img/placeholder-food.svg';"
+                />
+                <figcaption>Paneer</figcaption>
+              </figure>
+              <figure class="food-chip">
+                <img
+                  alt="Dosa"
+                  loading="lazy"
+                  referrerpolicy="no-referrer"
+                  src="assets/img/products/masala-dosa-platter.jpg"
+                  onerror="this.onerror=null;this.src='assets/img/placeholder-food.svg';"
+                />
+                <figcaption>Dosa</figcaption>
+              </figure>
+              <figure class="food-chip">
+                <img
+                  alt="Dessert"
+                  loading="lazy"
+                  referrerpolicy="no-referrer"
+                  src="assets/img/products/chocolate-brownie.jpg"
+                  onerror="this.onerror=null;this.src='assets/img/placeholder-dessert.svg';"
+                />
+                <figcaption>Dessert</figcaption>
+              </figure>
+            </div>
+          </div>
+        </aside>
+
+        <div class="auth-card" aria-label="Authentication">
+          <div class="auth-top">
+            <h2 class="auth-title">Welcome back</h2>
+            <p class="muted auth-subtitle">Login to continue, or create a new account.</p>
+          </div>
+
+          <div class="auth-switch" role="tablist" aria-label="Auth mode">
+            <button id="auth-mode-login" class="auth-switch-btn active" type="button" role="tab" aria-selected="true">Login</button>
+            <button id="auth-mode-register" class="auth-switch-btn" type="button" role="tab" aria-selected="false">Register</button>
+          </div>
+
+          <div id="auth-login-panel" class="auth-panel active" role="tabpanel">
+            <form id="login-form" class="form-card">
+              <label>Email <input id="login-email" type="email" autocomplete="email" required /></label>
+              <label>Password <input id="login-password" type="password" autocomplete="current-password" required /></label>
+              <button class="btn btn-wide" type="submit">Login</button>
+              <p class="muted tiny">
+                Don’t have an account?
+                <button id="auth-link-to-register" class="link-btn" type="button">Register here</button>
+              </p>
+            </form>
+          </div>
+
+          <div id="auth-register-panel" class="auth-panel" role="tabpanel">
+            <form id="register-form" class="form-card">
+              <div class="two-col">
+                <label>Full Name <input id="reg-name" type="text" autocomplete="name" required /></label>
+                <label>Phone <input id="reg-phone" type="tel" autocomplete="tel" required /></label>
+              </div>
+              <label>Email <input id="reg-email" type="email" autocomplete="email" required /></label>
+              <label>Password <input id="reg-password" type="password" autocomplete="new-password" minlength="6" required /></label>
+              <label>Role
+                <select id="reg-role" required>
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </label>
+              <button class="btn btn-wide" type="submit">Create Account</button>
+              <p class="muted tiny">
+                Already registered?
+                <button id="auth-link-to-login" class="link-btn" type="button">Login</button>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+      <p id="auth-msg" class="msg"></p>
+    </section>
+
+    <section id="app-section" class="hidden">
+
+      <section id="products" class="panel tab-panel active">
+        <h2>Products</h2>
+        <div class="search-bar">
+          <input id="product-search" type="text" placeholder="Search products..." />
+          <select id="product-type-filter">
+            <option value="">All Types</option>
+            <option value="Rice">Rice</option>
+            <option value="Pasta">Pasta</option>
+            <option value="Noodles">Noodles</option>
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Drinks">Drinks</option>
+          </select>
+          <select id="product-shop-filter">
+            <option value="">All Shops</option>
+          </select>
+          <div class="veg-toggle" data-state="" aria-label="Vegetarian filter">
+            <button id="product-veg-all" class="filter-toggle-btn active" type="button">All</button>
+            <span class="veg-text veg">Veg</span>
+            <button id="product-veg-toggle" class="veg-switch" type="button" role="switch" aria-checked="false" data-state="">
+              <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+            </button>
+            <span class="veg-text nonveg">Non-Veg</span>
+          </div>
+          <input id="price-min" type="number" min="0" placeholder="Min price" style="width:80px;" />
+          <input id="price-max" type="number" min="0" placeholder="Max price" style="width:80px;" />
+          <button id="clear-filters-btn" class="btn btn-secondary" type="button">Clear Filters</button>
+        </div>
+        <div class="layout-two">
+          <div>
+            <div id="products-list" class="list-grid"></div>
+          </div>
+          <aside class="cart-box">
+            <h3>Cart</h3>
+            <ul id="cart-list" class="clean-list"></ul>
+            <p>Total: <strong id="cart-total">&#8377; 0.00</strong></p>
+            <button id="place-order-btn" class="btn">Place Order</button>
+          </aside>
+        </div>
+      </section>
+
+      <section id="caterers" class="panel tab-panel">
+        <h2>Catering Shops</h2>
+        <p class="muted">Browse caterers and jump directly to their menu.</p>
+        <div id="admin-caterers-tools" class="hidden" style="margin: 0.75rem 0;">
+          <button id="seed-caterers-btn" class="btn btn-secondary">Seed Sample Shops</button>
+        </div>
+        <div id="caterers-list" class="list-grid"></div>
+      </section>
+
+      <section id="reservations" class="panel tab-panel">
+        <h2>Reservations</h2>
+        <div class="layout-two">
+          <div>
+            <form id="reservation-form" class="form-card">
+              <h3>Book a Catering Reservation</h3>
+              <label>Catering Shop
+                <select id="reservation-caterer" required>
+                  <option value="">Select a shop</option>
+                </select>
+              </label>
+              <label>Event Type
+                <select id="reservation-type" required>
+                  <option value="">Select an event</option>
+                  <option>Wedding</option>
+                  <option>Birthday</option>
+                  <option>Corporate</option>
+                  <option>Engagement</option>
+                  <option>Other</option>
+                </select>
+              </label>
+              <label>Event Date <input id="reservation-date" type="date" required /></label>
+              <label>Event Time <input id="reservation-time" type="time" required /></label>
+              <label>Guests <input id="reservation-guests" type="number" min="1" required /></label>
+              <label>Venue Address <textarea id="reservation-venue" rows="3" required></textarea></label>
+              <label>Notes (optional) <textarea id="reservation-notes" rows="2"></textarea></label>
+              <button class="btn" type="submit">Submit Reservation</button>
+            </form>
+          </div>
+          <aside>
+            <h3>My Reservations</h3>
+            <div id="my-reservations-list" class="list-grid"></div>
+
+            <div id="admin-reservations-box" class="hidden" style="margin-top: 1rem;">
+              <h3>All Reservations (Admin)</h3>
+              <div id="all-reservations-list" class="list-grid"></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="orders" class="panel tab-panel">
+        <h2>My Orders</h2>
+        <div id="my-orders-list" class="list-grid"></div>
+      </section>
+
+      <section id="profile" class="panel tab-panel">
+        <h2>My Profile</h2>
+        <div id="profile-card" class="profile-card"></div>
+      </section>
+
+      <section id="admin-products" class="panel tab-panel">
+        <h2>Upload Product</h2>
+        <form id="product-form" class="form-card">
+          <div class="two-col">
+            <label>Product Name <input id="product-name" type="text" placeholder="e.g., Classic Chicken Biryani" required /></label>
+            <label>Type
+              <select id="product-type" required>
+                <option value="">Select a type</option>
+                <option value="Rice">Rice</option>
+                <option value="Pasta">Pasta</option>
+                <option value="Noodles">Noodles</option>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Dessert">Dessert</option>
+                <option value="Drinks">Drinks</option>
+              </select>
+            </label>
+          </div>
+          <label>Description <textarea id="product-desc" rows="3" required></textarea></label>
+          <div class="two-col">
+            <label>Price (₹) <input id="product-price" min="0" step="0.01" type="number" placeholder="e.g., 120" required /></label>
+            <label class="check-row"><input id="product-veg" type="checkbox" /> Vegetarian</label>
+          </div>
+          <label>Image <input id="product-image" type="file" accept="image/*" /></label>
+          <button class="btn btn-wide" type="submit">Upload Product</button>
+        </form>
+        <!-- seed sample data for demo/testing -->
+        <button id="seed-products-btn" class="btn" style="margin-top:1rem;">Seed Sample Products</button>
+      </section>
+
+      <section id="admin-orders" class="panel tab-panel">
+        <h2>All Orders</h2>
+        <div id="admin-orders-list" class="list-grid"></div>
+      </section>
+    </section>
+
+    <p id="app-msg" class="msg"></p>
+  </main>
+
+  <div id="toast-root" class="toast-root" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff7ed"/>
+      <stop offset="0.55" stop-color="#f6f7fb"/>
+      <stop offset="1" stop-color="#eef7ff"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#f59e0b" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#ec4899" stop-opacity="0.12"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="600" fill="url(#bg)"/>
+  <rect x="60" y="70" width="780" height="460" rx="28" fill="white" opacity="0.92"/>
+  <rect x="60" y="70" width="780" height="460" rx="28" fill="url(#card)"/>
+  <rect x="60" y="70" width="780" height="460" rx="28" fill="none" stroke="#d4d9e2" stroke-width="2"/>
+
+  <g transform="translate(360,170)">
+    <path d="M90 20c-40 0-72 26-72 58 0 13 6 25 16 34-12 10-20 25-20 41 0 31 31 56 70 56h96c39 0 70-25 70-56 0-16-8-31-20-41 10-9 16-21 16-34 0-32-32-58-72-58H90z" fill="#ec4899" opacity="0.14"/>
+    <path d="M82 112c-20 0-36 14-36 31 0 17 16 31 36 31h136c20 0 36-14 36-31 0-17-16-31-36-31H82z" fill="#f59e0b" opacity="0.18"/>
+    <path d="M70 190h212l-18 64c-4 14-16 24-30 24H118c-14 0-26-10-30-24l-18-64z" fill="#1f2937" opacity="0.12"/>
+    <circle cx="132" cy="84" r="10" fill="#1f2937" opacity="0.2"/>
+    <circle cx="186" cy="62" r="9" fill="#1f2937" opacity="0.2"/>
+    <circle cx="234" cy="90" r="8" fill="#1f2937" opacity="0.2"/>
+  </g>
+
+  <text x="450" y="435" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="28" font-weight="800" fill="#1f2937">
+    Dessert image unavailable
+  </text>
+  <text x="450" y="472" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="18" fill="#5b6574">
+    Check network / image host access
+  </text>
+</svg>
+

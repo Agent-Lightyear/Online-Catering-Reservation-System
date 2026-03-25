@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF Requirements Extractor</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; background: #f6f7fb; color: #111827; }
+    .wrap { width: min(980px, 92%); margin: 28px auto; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; box-shadow: 0 10px 28px rgba(0,0,0,0.06); }
+    h1 { margin: 0 0 6px; font-size: 20px; }
+    p { margin: 8px 0; color: #4b5563; line-height: 1.5; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 12px 0; }
+    button { border: 0; border-radius: 10px; padding: 10px 12px; background: #0b6e4f; color: #fff; cursor: pointer; }
+    button.secondary { background: #6b7280; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    textarea { width: 100%; min-height: 420px; border: 1px solid #e5e7eb; border-radius: 12px; padding: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; }
+    .status { font-weight: 600; color: #111827; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>PDF Requirements Extractor</h1>
+      <p>Select your project PDF (e.g. “Catering Reservation and Ordering System.docx.pdf”). This page extracts plain text you can paste into ChatGPT/Codex so the website can be matched 1:1.</p>
+      <p><strong>Tip:</strong> serve the project (don’t open via <code>file://</code>) and then open <code>/tools/pdf-extract.html</code>.</p>
+
+      <div class="row">
+        <input id="pdf-file" type="file" accept="application/pdf" />
+        <button id="extract-btn" disabled>Extract Text</button>
+        <button id="copy-btn" class="secondary" disabled>Copy</button>
+        <span id="status" class="status"></span>
+      </div>
+
+      <textarea id="out" placeholder="Extracted text will appear here..."></textarea>
+    </div>
+  </div>
+
+  <script type="module">
+    import * as pdfjsLib from "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs";
+
+    const fileInput = document.getElementById("pdf-file");
+    const extractBtn = document.getElementById("extract-btn");
+    const copyBtn = document.getElementById("copy-btn");
+    const out = document.getElementById("out");
+    const statusEl = document.getElementById("status");
+
+    function setStatus(text) {
+      statusEl.textContent = text || "";
+    }
+
+    fileInput.addEventListener("change", () => {
+      extractBtn.disabled = !fileInput.files || !fileInput.files.length;
+      copyBtn.disabled = true;
+      out.value = "";
+      setStatus("");
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(out.value || "");
+      setStatus("Copied.");
+      setTimeout(() => setStatus(""), 1200);
+    });
+
+    extractBtn.addEventListener("click", async () => {
+      if (!fileInput.files || !fileInput.files.length) return;
+      const file = fileInput.files[0];
+
+      extractBtn.disabled = true;
+      copyBtn.disabled = true;
+      out.value = "";
+      setStatus("Loading PDF...");
+
+      try {
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        const doc = await pdfjsLib.getDocument({ data: bytes }).promise;
+
+        let text = `# Extracted from: ${file.name}\n# Pages: ${doc.numPages}\n\n`;
+        for (let i = 1; i <= doc.numPages; i++) {
+          setStatus(`Extracting page ${i}/${doc.numPages}...`);
+          const page = await doc.getPage(i);
+          const content = await page.getTextContent();
+          const pageText = content.items.map((it) => (it.str || "").trim()).filter(Boolean).join(" ");
+          text += `\n\n--- Page ${i} ---\n${pageText}\n`;
+        }
+
+        out.value = text.trim();
+        copyBtn.disabled = !out.value;
+        setStatus("Done.");
+      } catch (err) {
+        console.error(err);
+        out.value = (err && err.message) ? err.message : String(err);
+        setStatus("Failed.");
+      } finally {
+        extractBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
+
