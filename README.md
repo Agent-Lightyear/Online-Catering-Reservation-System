@@ -29,7 +29,7 @@ Serve the project with a local static server (don’t open via `file://`).
 npx serve . -l 8000
 ```
 
-Open `http://localhost:8000/index.html`.
+Open `https://online-catering-a49cb.web.app/`.
 
 or use Live server
 
